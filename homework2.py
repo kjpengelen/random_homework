@@ -28,29 +28,47 @@ print("")
 
 # Put the linear regression in a function def since i needed it multiple times during construction.
 def linear_regression(X, y, m_current=0, b_current=0, epochs=10, learning_rate=0.01):
-     N = float(len(y))
-     m_hist = np.zeros((epochs,2));
-     b_hist = np.zeros((epochs,2));
-     c_hist = np.zeros(epochs);
-     for i in range(epochs):
-          y_current = (m_current * X) + b_current
-          cost = sum([data**2 for data in (y-y_current)]) / N
-          m_gradient = -(2/N) * sum(X * (y - y_current))
-          b_gradient = -(2/N) * sum(y - y_current)
-          m_current = m_current - (learning_rate * m_gradient)
-          b_current = b_current - (learning_rate * b_gradient)
+    '''
+    Performs linear linear regression
 
-          # Storing values of this iterations
-          m_hist[i,:] = m_current
-          b_hist[i,:] = b_current
-          c_hist[i] = cost
-     return m_hist, b_hist, c_hist
+    epochs = number of iterations
+    learning_rate = step size
+
+    Output:
+    all output are vectors
+    m_hist = slopes that were used during the iterations
+    b_hist = intersections used during the iterations
+    c_hist = costs associated with these values
+    '''
+    N = float(len(y))
+    m_hist = np.zeros((epochs,2));
+    b_hist = np.zeros((epochs,2));
+    c_hist = np.zeros(epochs);
+    for i in range(epochs):
+        y_current = (m_current * X) + b_current
+        cost = sum([data**2 for data in (y-y_current)]) / N
+        m_gradient = -(2/N) * sum(X * (y - y_current))
+        b_gradient = -(2/N) * sum(y - y_current)
+        m_current = m_current - (learning_rate * m_gradient)
+        b_current = b_current - (learning_rate * b_gradient)
+
+        # Storing values of this iterations
+        m_hist[i,:] = m_current
+        b_hist[i,:] = b_current
+        c_hist[i] = cost
+    return m_hist, b_hist, c_hist
 
 # Values
 lr = 0.01;
 n_iter = 2000;
 
-m_hist,b_hist,c_hist = linear_regression(trans_data.X, trans_data.Y, 0, 0, n_iter, lr);
+# Could put starting point at 1 and slope at -1, which gut feel says
+# is a good starting point if you observe the points. However,
+# doing that makes difference between iteration 1 and 2000+ less obvious.
+starting_intersect = 0;
+starting_slope = 0;
+
+m_hist,b_hist,c_hist = linear_regression(trans_data.X, trans_data.Y, starting_slope, starting_intersect, n_iter, lr);
 
 # A big figure containing all our plots
 fig = plt.figure(figsize=(5,4),dpi=200)
