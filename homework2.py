@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
+from sklearn import linear_model
+from sklearn.metrics import mean_squared_error, r2_score
 
 # 1) Data acquisition
 data = pd.read_excel('HW2data.xlsx')
@@ -25,6 +27,24 @@ trans_data = pd.DataFrame(trans_data, columns=['X','Y']) # give columns names X 
 print("Transformed data")
 print(trans_data)
 print("")
+
+#Linear regression using Mean Squared Error
+X = pd.DataFrame(data=trans_data['X'])  #put into dataframe suitable for regression lib
+Y = pd.DataFrame(data=trans_data['Y'])
+
+reg = linear_model.LinearRegression()
+reg.fit(X, Y)   #fit linear model
+print('Regression coefficient: %.2f' %reg.coef_)
+print('Regression intercept: %.2f' %reg.intercept_)
+
+y_pred = reg.predict(X) #predict y for given data X to derive MSE and variance of model
+print('Mean squared error: %.2f' % mean_squared_error(Y, y_pred))
+print('Variance score: %.2f' % r2_score(Y, y_pred))
+
+#plot data and regression line
+plt.scatter(X, Y, color='r')
+plt.plot(X, reg.predict(X), color='b')
+plt.show()
 
 # Put the linear regression in a function def since i needed it multiple times during construction.
 def linear_regression(X, y, m_current=0, b_current=0, epochs=10, learning_rate=0.01):
