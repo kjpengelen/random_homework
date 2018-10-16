@@ -5,6 +5,14 @@ from sklearn import preprocessing
 from sklearn import linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 
+# function to print parameter values for q5-q8
+def print_values(i, m_current, b_current, cost):
+    print("Iteration: %.0f" % i)
+    print("Intercept: %.4f" % m_current)
+    print("Slope: %.3f" % b_current)
+    print("Cost: %.4f" % cost)
+    print("")
+
 # 1) Data acquisition
 data = pd.read_excel('HW2data.xlsx')
 row_number = (19-1)*5
@@ -46,7 +54,6 @@ print('Variance score: %.2f' % r2_score(Y, y_pred))
 plt.scatter(X, Y, color='r')
 plt.plot(X, reg.predict(X), color='b')
 plt.show()
-'''
 
 # 4) Linear Regression with Gradient Descent - loss function
 
@@ -75,9 +82,9 @@ print("Intercept: " + str(clf.intercept_))
 
 y_pred = clf.predict(X) #predict y for given data X to derive MSE and variance of model
 print("R2: " + str(clf.score(X, y_pred)))
-
 '''
-# 5) Linear Regression with GD - first iteration
+
+# 5-8) Linear Regression with GD - first iteration
 
 # Put the linear regression in a function def since i needed it multiple times during construction.
 def linear_regression(X, y, m_current=0, b_current=0, epochs=10, learning_rate=0.01):
@@ -109,11 +116,25 @@ def linear_regression(X, y, m_current=0, b_current=0, epochs=10, learning_rate=0
         m_hist[i,:] = m_current
         b_hist[i,:] = b_current
         c_hist[i] = cost
+
+        if i == 1:
+            print_values(i, m_current, b_current, cost)
+        elif i == 2:
+            print_values(i, m_current, b_current, cost)
+        elif i == 3:
+            print_values(i, m_current, b_current, cost)
+        elif i == 1250:
+            print_values(i, m_current, b_current, cost)
+        elif i == 1500:
+            print_values(i, m_current, b_current, cost)
+        elif i == 2000:
+            print_values(i, m_current, b_current, cost)
+
     return m_hist, b_hist, c_hist
 
 # Values
 lr = 0.01;
-n_iter = 2000;
+n_iter = 2001;
 
 # Could put starting point at 1 and slope at -1, which gut feel says
 # is a good starting point if you observe the points. However,
@@ -144,4 +165,3 @@ ax1 = fig.add_subplot(4, 2, count+1);
 ax1.plot(range(n_iter),c_hist,'b.')
 
 plt.show();
-'''
