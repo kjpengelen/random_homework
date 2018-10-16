@@ -28,7 +28,8 @@ print("Transformed data")
 print(trans_data)
 print("")
 
-#Linear regression using Mean Squared Error
+'''
+# 3) Linear regression using Mean Squared Error
 X = pd.DataFrame(data=trans_data['X'])  #put into dataframe suitable for regression lib
 Y = pd.DataFrame(data=trans_data['Y'])
 
@@ -45,21 +46,53 @@ print('Variance score: %.2f' % r2_score(Y, y_pred))
 plt.scatter(X, Y, color='r')
 plt.plot(X, reg.predict(X), color='b')
 plt.show()
+'''
+
+# 4) Linear Regression with Gradient Descent - loss function
+
+# Choose a suitable loss function, motivate your choice
+# Perform the partial derivatives of the loss function with respect to each of the regression parameters
+
+from sklearn.linear_model import SGDRegressor
+
+features = pd.DataFrame({'feat': ['1', '1', '1', '1', '1']},index=[0,1,2,3,4])
+trans_data = pd.concat([trans_data, features],axis=1, sort=False)
+X = trans_data.drop(columns=['Y'])
+y = trans_data['Y']
+
+LossFunctionA = 'squared_loss'
+LossFunctionB = 'huber'
+LossFunctionC = 'epsilon_insensitive'
+LossFunctionD = 'squared_epsilon_insensitive'
+
+loss = LossFunctionD
+
+clf = linear_model.SGDRegressor(loss=loss, max_iter=100)
+clf.fit(X, y)
+
+print("Weights:" + str(clf.coef_))
+print("Intercept: " + str(clf.intercept_))
+
+y_pred = clf.predict(X) #predict y for given data X to derive MSE and variance of model
+print("R2: " + str(clf.score(X, y_pred)))
+
+'''
+# 5) Linear Regression with GD - first iteration
 
 # Put the linear regression in a function def since i needed it multiple times during construction.
 def linear_regression(X, y, m_current=0, b_current=0, epochs=10, learning_rate=0.01):
-    '''
-    Performs linear linear regression
 
-    epochs = number of iterations
-    learning_rate = step size
+    # Performs linear linear regression
 
-    Output:
-    all output are vectors
-    m_hist = slopes that were used during the iterations
-    b_hist = intersections used during the iterations
-    c_hist = costs associated with these values
-    '''
+    # epochs = number of iterations
+    # learning_rate = step size
+
+    # Output:
+    # all output are vectors
+    # m_hist = slopes that were used during the iterations
+    # b_hist = intersections used during the iterations
+    # c_hist = costs associated with these values
+
     N = float(len(y))
     m_hist = np.zeros((epochs,2));
     b_hist = np.zeros((epochs,2));
@@ -111,3 +144,4 @@ ax1 = fig.add_subplot(4, 2, count+1);
 ax1.plot(range(n_iter),c_hist,'b.')
 
 plt.show();
+'''
